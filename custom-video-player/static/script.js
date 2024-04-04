@@ -94,7 +94,9 @@ document.getElementById('searchBar').addEventListener('keyup', function(event) {
     .then(data => {
       console.log(data.result);
       // 서버에서 전달된 결과를 처리하는 로직을 추가
+      document.getElementById('searchBar').querySelector('input').value = '';
     })
+    
     .catch(error => {
       console.error('Error:', error);
     });
