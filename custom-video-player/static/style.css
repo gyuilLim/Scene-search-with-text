@@ -40,12 +40,12 @@ video[poster] {
   color: #fff;
   display: none;
   position: absolute;
-  height: 300px;
+  height: 320px;
   z-index: 1;
   background-color: rgba(0, 0, 0, 0.8); /* 검색 창 배경색 */
   border-radius: 10px; /* 검색 창 테두리 반경 */
   padding: 20px; /* 내부 여백 */
-  top: 50%; /* 화면 상단에서 수직 정렬 */
+  top: 40%; /* 화면 상단에서 수직 정렬 */
   left: 50%; /* 화면 왼쪽에서 수평 정렬 */
   transform: translate(-50%, -50%); /* 가운데 정렬 */
 }
