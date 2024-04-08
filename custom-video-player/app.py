@@ -20,11 +20,12 @@ def search():
     search_text = request.json.get('search_text', '')  # 클라이언트로부터 검색어 받기
 
     text_set = load_json()
-    max_index = text_similarity(text_set['text_list'], search_text)
-    time = text_set['time_line'][max_index]
+    top_3_idx = text_similarity(text_set['text_list'], search_text)
 
+    time = []
+    for idx in top_3_idx :
+        time.append(text_set['time_line'][idx])
 
-    processed_data = f"검색어 '{search_text}'를 처리했습니다."
     return jsonify({'result': str(time)})  # JSON 응답으로 데이터 전송
 
 if __name__ == '__main__':

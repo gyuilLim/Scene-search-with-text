@@ -19,6 +19,7 @@ def text_similarity(flat_msg_list, pormpt) :
             }
         })
 
-    max_index = np.argmax(data)
+    sorted_idx = np.argsort(data)
+    top_3_idx = sorted_idx[-3:]
     
-    return max_index
+    return top_3_idx

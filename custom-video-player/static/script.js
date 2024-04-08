@@ -5,6 +5,7 @@ const progress = document.getElementById('progress');
 const timestamp = document.getElementById('timestamp');
 const searchBtn = document.getElementById('searchBtn');
 const searchBar = document.getElementById('searchBar');
+const controls = document.getElementsByClassName('controls');
 
 
 // Play & pause video
@@ -62,6 +63,60 @@ function toggleSearchBar() {
     searchBar.style.display = 'none';
   }
 }
+
+
+// 마우스가 비디오 화면에 들어왔을 때 이벤트 처리
+video.addEventListener('mouseenter', function() {
+  fadeIn(progress);
+  fadeIn(play);
+  fadeIn(stop);
+  fadeIn(timestamp);
+  fadeIn(searchBtn);
+  fadeIn(searchBar);
+});
+
+// 마우스가 비디오 화면에서 나갔을 때 이벤트 처리
+video.addEventListener('mouseleave', function() {
+  fadeOut(progress);
+  fadeOut(play);
+  fadeOut(stop);
+  fadeOut(timestamp);
+  fadeOut(searchBtn);
+  fadeIn(searchBar);
+});
+
+for (let i = 0; i < controls.length; i++) {
+  controls[i].addEventListener('mouseenter', function() {
+    fadeIn(progress);
+    fadeIn(play);
+    fadeIn(stop);
+    fadeIn(timestamp);
+    fadeIn(searchBtn);
+  });
+
+  // 마우스가 비디오 화면에서 나갔을 때 이벤트 처리
+  controls[i].addEventListener('mouseleave', function() {
+    fadeOut(progress);
+    fadeOut(play);
+    fadeOut(stop);
+    fadeOut(timestamp);
+    fadeOut(searchBtn);
+  });
+}
+
+
+// 부드러운 나타나기 효과 함수
+function fadeIn(element) {
+  element.style.opacity = '1';
+  element.style.transition = 'opacity 0.3s ease-in-out';
+}
+
+// 부드러운 사라지기 효과 함수
+function fadeOut(element) {
+  element.style.opacity = '0';
+  element.style.transition = 'opacity 0.3s ease-in-out';
+}
+
 
 
 
