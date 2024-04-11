@@ -20,28 +20,17 @@ h1 {
 }
 
 video[poster] {
-  /* width: 100%; 포스터 이미지의 너비를 화면 너비에 맞게 설정 */
   object-fit: cover;
-  /* height: auto; 높이를 자동으로 조정하여 이미지의 비율을 유지 */
-  border-top-left-radius: 20px; /* 포스터 이미지의 상단 좌측 모서리 반경 */
-  border-top-right-radius: 20px; /* 포스터 이미지의 상단 우측 모서리 반경 */
+  border-top-left-radius: 20px; 
+  border-top-right-radius: 20px; 
 }
 
 img {
   margin-top : 50px;
-  margin-right: 10px; /* 이미지 오른쪽 간격 설정 */
+  margin-right: 10px; 
   border: 1px solid #942828;
   cursor: pointer;
 }
-
-
-/* .search-bar {
-  color: #fff;
-  display: none;
-  position: absolute;
-  height:300px;
-  z-index:1
-} */
 
 .search-bar {
   color: #fff;
@@ -49,12 +38,12 @@ img {
   position: absolute;
   height: 320px;
   z-index: 1;
-  background-color: rgba(0, 0, 0, 0.8); /* 검색 창 배경색 */
-  border-radius: 10px; /* 검색 창 테두리 반경 */
-  padding: 20px; /* 내부 여백 */
-  top: 40%; /* 화면 상단에서 수직 정렬 */
-  left: 50%; /* 화면 왼쪽에서 수평 정렬 */
-  transform: translate(-50%, -50%); /* 가운데 정렬 */
+  background-color: rgba(0, 0, 0, 0.8);
+  border-radius: 10px; 
+  padding: 20px; 
+  top: 40%; 
+  left: 50%; 
+  transform: translate(-50%, -50%); 
 }
 
 .screen {
@@ -67,16 +56,15 @@ img {
 }
 
 .controls {
-  background: rgba(0, 0, 0, 0.1); /* 검은색 배경을 약간 투명하게 설정 */
-  /* background: #000; */
+  background: rgba(0, 0, 0, 0.1); 
   color: #fff;
   width: 60%;
   display: flex;
   justify-content: center;
   align-items: center;
   padding: 3px;
-  position: relative; /* 위치 지정 */
-  top: -40px; /* 위로 10px 이동 */
+  position: relative;
+  top: -40px; 
 }
 
 .controls .btn {
