@@ -27,6 +27,13 @@ video[poster] {
   border-top-right-radius: 20px; /* 포스터 이미지의 상단 우측 모서리 반경 */
 }
 
+img {
+  margin-top : 50px;
+  margin-right: 10px; /* 이미지 오른쪽 간격 설정 */
+  border: 1px solid #942828;
+  cursor: pointer;
+}
+
 
 /* .search-bar {
   color: #fff;
@@ -51,7 +58,6 @@ video[poster] {
 }
 
 .screen {
-  cursor: pointer;
   width: 80%;
   background-color: #000 !important;
   border-top-left-radius: 10px;

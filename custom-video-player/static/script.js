@@ -6,6 +6,8 @@ const timestamp = document.getElementById('timestamp');
 const searchBtn = document.getElementById('searchBtn');
 const searchBar = document.getElementById('searchBar');
 const controls = document.getElementsByClassName('controls');
+const timeOutputDiv = document.getElementById('timeOutput');
+const videoFramesDiv = document.getElementById('videoFrames');
 
 
 // Play & pause video
@@ -64,7 +66,6 @@ function toggleSearchBar() {
   }
 }
 
-
 // 마우스가 비디오 화면에 들어왔을 때 이벤트 처리
 video.addEventListener('mouseenter', function() {
   fadeIn(progress);
@@ -104,7 +105,6 @@ for (let i = 0; i < controls.length; i++) {
   });
 }
 
-
 // 부드러운 나타나기 효과 함수
 function fadeIn(element) {
   element.style.opacity = '1';
@@ -116,10 +116,6 @@ function fadeOut(element) {
   element.style.opacity = '0';
   element.style.transition = 'opacity 0.3s ease-in-out';
 }
-
-
-
-
 
 // Event listeners
 video.addEventListener('click', toggleVideoStatus);
@@ -147,10 +143,41 @@ document.getElementById('searchBar').addEventListener('keyup', function(event) {
     })
     .then(response => response.json())
     .then(data => {
-      console.log(data.result);
-      // 서버에서 전달된 결과를 처리하는 로직을 추가
+      // timeOutputDiv.innerHTML = '';
+      videoFramesDiv.innerHTML = '';
+      JSON.parse(data.result).forEach((time, index) => {
+            // timeOutputDiv.innerHTML += `<p>Scene ${index + 1}: ${time} sec</p>`;
+
+
+            fetch(`/get_frame?time=${time}&index=${index}`)
+              .then(response => response.json())  
+              .then(frameData => {
+
+                const frame_url = frameData.frame_url;
+                const frameImg = document.createElement('img');
+
+                var tmpData = new Date();
+
+                frameImg.src = frame_url + '?' + tmpData 
+                console.log(frameImg)
+                frameImg.style.width = '30%'
+                frameImg.alt = `Frame at Time${index + 1}`;
+
+                frameImg.addEventListener('click', () => {
+                  video.currentTime = time;
+                  searchBar.style.display = 'none';
+                });
+
+                videoFramesDiv.appendChild(frameImg);
+              })
+              .catch(error => {
+                  console.error('Error fetching frame:', error);
+              });
+        });
+      
       document.getElementById('searchBar').querySelector('input').value = '';
     })
+  
     
     .catch(error => {
       console.error('Error:', error);
