@@ -31,25 +31,16 @@ def search():
 
 @app.route('/get_frame')
 def get_frame():
-    # 클라이언트가 전달한 시간을 가져옵니다.
     time = request.args.get('time', '')
     index = request.args.get('index', '')
-    # 여기에서 time 변수를 기반으로 해당 시간에 해당하는 비디오 프레임을 반환하는 코드를 작성합니다.
-    # 예를 들어, 시간을 기반으로 비디오 파일에서 해당 프레임을 추출하고, 해당 프레임을 클라이언트에게 반환할 수 있습니다.
-    
-    # 여기에서는 간단하게 예시를 작성합니다.
-    # 클라이언트에게는 시간에 해당하는 비디오 프레임의 URL을 반환합니다.
-    # 실제로는 해당 URL에 비디오 프레임을 반환하는 코드를 작성해야 합니다.
-    video_frame_url = f'./static/frames/{index}.jpg'  # 예시: 시간을 파일 이름으로 하는 프레임 이미지 파일 경로
+    video_frame_url = f'./static/frames/{index}.jpg' 
     save_frame('./static/video.mp4', time, video_frame_url)
     return jsonify({'frame_url': video_frame_url})
 
 def save_frame(video_path, time_in_seconds, output_path):
-    # 비디오 파일 열기
     time_in_seconds = float(time_in_seconds)
     cap = cv2.VideoCapture(video_path)
     
-    # 비디오 파일 열기에 성공했는지 확인
     if not cap.isOpened():
         print("Error: Unable to open video file.")
         return None

@@ -66,7 +66,6 @@ function toggleSearchBar() {
   }
 }
 
-// 마우스가 비디오 화면에 들어왔을 때 이벤트 처리
 video.addEventListener('mouseenter', function() {
   fadeIn(progress);
   fadeIn(play);
@@ -76,7 +75,6 @@ video.addEventListener('mouseenter', function() {
   fadeIn(searchBar);
 });
 
-// 마우스가 비디오 화면에서 나갔을 때 이벤트 처리
 video.addEventListener('mouseleave', function() {
   fadeOut(progress);
   fadeOut(play);
@@ -95,7 +93,6 @@ for (let i = 0; i < controls.length; i++) {
     fadeIn(searchBtn);
   });
 
-  // 마우스가 비디오 화면에서 나갔을 때 이벤트 처리
   controls[i].addEventListener('mouseleave', function() {
     fadeOut(progress);
     fadeOut(play);
@@ -105,19 +102,16 @@ for (let i = 0; i < controls.length; i++) {
   });
 }
 
-// 부드러운 나타나기 효과 함수
 function fadeIn(element) {
   element.style.opacity = '1';
   element.style.transition = 'opacity 0.3s ease-in-out';
 }
 
-// 부드러운 사라지기 효과 함수
 function fadeOut(element) {
   element.style.opacity = '0';
   element.style.transition = 'opacity 0.3s ease-in-out';
 }
 
-// Event listeners
 video.addEventListener('click', toggleVideoStatus);
 video.addEventListener('pause', updatePlayIcon);
 video.addEventListener('play', updatePlayIcon);
@@ -125,12 +119,11 @@ video.addEventListener('timeupdate', updateProgress);
 play.addEventListener('click', toggleVideoStatus)
 stop.addEventListener('click', stopVideo);
 progress.addEventListener('change', setVideoProgress);
-
-// custom
 searchBtn.addEventListener('click', toggleSearchBar);
 
+
 document.getElementById('searchBar').addEventListener('keyup', function(event) {
-  if (event.key === 'Enter') { // Enter 키가 눌렸을 때
+  if (event.key === 'Enter') { 
     var searchInput = document.getElementById('searchBar').querySelector('input').value;
     fetch('/search', {
       method: 'POST',
@@ -143,12 +136,8 @@ document.getElementById('searchBar').addEventListener('keyup', function(event) {
     })
     .then(response => response.json())
     .then(data => {
-      // timeOutputDiv.innerHTML = '';
       videoFramesDiv.innerHTML = '';
       JSON.parse(data.result).forEach((time, index) => {
-            // timeOutputDiv.innerHTML += `<p>Scene ${index + 1}: ${time} sec</p>`;
-
-
             fetch(`/get_frame?time=${time}&index=${index}`)
               .then(response => response.json())  
               .then(frameData => {
