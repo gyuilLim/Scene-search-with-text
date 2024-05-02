@@ -5,7 +5,7 @@ from utils.textSimilarity import text_similarity
 def inference(model_name, text, model, dataloader, device) :
     if model_name == "clip" :
         logits = []
-        text = clip.tokenize(['a baby with her mother']).to(device)
+        text = clip.tokenize(text).to(device)
         for data in tqdm(dataloader) :
             data = data.to(device)
             image_features = model.encode_image(data)
