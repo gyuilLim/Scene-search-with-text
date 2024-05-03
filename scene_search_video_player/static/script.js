@@ -3,6 +3,7 @@ const play = document.getElementById('play');
 const stop = document.getElementById('stop');
 const progress = document.getElementById('progress');
 const timestamp = document.getElementById('timestamp');
+const inferenceBtn = document.getElementById('inferenceBtn')
 const searchBtn = document.getElementById('searchBtn');
 const searchBar = document.getElementById('searchBar');
 const controls = document.getElementsByClassName('controls');
@@ -110,6 +111,15 @@ function fadeIn(element) {
 function fadeOut(element) {
   element.style.opacity = '0';
   element.style.transition = 'opacity 0.3s ease-in-out';
+}
+
+var condition = true;
+if (condition) {
+  inferenceBtn.style.display = "block";
+  searchBtn.style.display = "none";
+} else {
+  inferenceBtn.style.display = "none";
+  searchBtn.style.display = "block";
 }
 
 video.addEventListener('click', toggleVideoStatus);
