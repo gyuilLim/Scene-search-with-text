@@ -72,6 +72,7 @@ video.addEventListener('mouseenter', function() {
   fadeIn(play);
   fadeIn(stop);
   fadeIn(timestamp);
+  fadeIn(inferenceBtn);
   fadeIn(searchBtn);
   fadeIn(searchBar);
 });
@@ -81,6 +82,7 @@ video.addEventListener('mouseleave', function() {
   fadeOut(play);
   fadeOut(stop);
   fadeOut(timestamp);
+  fadeOut(inferenceBtn);
   fadeOut(searchBtn);
   fadeIn(searchBar);
 });
@@ -91,6 +93,7 @@ for (let i = 0; i < controls.length; i++) {
     fadeIn(play);
     fadeIn(stop);
     fadeIn(timestamp);
+    fadeIn(inferenceBtn);
     fadeIn(searchBtn);
   });
 
@@ -99,6 +102,7 @@ for (let i = 0; i < controls.length; i++) {
     fadeOut(play);
     fadeOut(stop);
     fadeOut(timestamp);
+    fadeOut(inferenceBtn);
     fadeOut(searchBtn);
   });
 }
@@ -113,12 +117,21 @@ function fadeOut(element) {
   element.style.transition = 'opacity 0.3s ease-in-out';
 }
 
-var condition = true;
-if (condition) {
+var InferenceCondition = false;
+if (!InferenceCondition) {
   inferenceBtn.style.display = "block";
   searchBtn.style.display = "none";
 } else {
   inferenceBtn.style.display = "none";
+  searchBtn.style.display = "block";
+}
+
+function inference(element) {
+  // inference
+  InferenceCondition = true
+  // inferenceBtn을 숨김
+  inferenceBtn.style.display = "none";
+  // searchBtn을 표시
   searchBtn.style.display = "block";
 }
 
@@ -130,6 +143,8 @@ play.addEventListener('click', toggleVideoStatus)
 stop.addEventListener('click', stopVideo);
 progress.addEventListener('change', setVideoProgress);
 searchBtn.addEventListener('click', toggleSearchBar);
+inferenceBtn.addEventListener('click', inference);
+
 
 
 document.getElementById('searchBar').addEventListener('keyup', function(event) {
