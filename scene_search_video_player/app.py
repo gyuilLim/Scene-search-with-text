@@ -1,5 +1,9 @@
 from flask import Flask, request, jsonify, render_template
 from utils.textSimilarity import text_similarity
+from threading import Thread
+import time
+from status_manager import processing_status
+from texting import video_texting
 import json
 import cv2
 
@@ -16,6 +20,28 @@ def load_json() :
     
     return text_set
 
+
+@app.route('/inference', methods=['POST'])
+def inference():
+    task_id = str(time.time())  # 고유한 작업 ID 생성
+    processing_status[task_id] = "시작됨"
+    thread = Thread(target=video_texting, args=('./static/video.mp4', task_id))
+    thread.start()
+    return jsonify({'task_id': task_id})
+
+
+@app.route('/status/<task_id>', methods=['GET'])
+def status(task_id):
+    print(f"Received status check for task_id: {task_id}")
+    status = processing_status.get(task_id, "작업 ID가 유효하지 않습니다.")
+    return jsonify({'status': status})
+
+
+
+# def inference() :
+#     video_texting('./static/video.mp4', 0)
+#     return jsonify({'result': True})
+
 @app.route('/search', methods=['POST'])
 def search():
     search_text = request.json.get('search_text', '')  
@@ -27,7 +53,7 @@ def search():
     for idx in top_3_idx :
         time.append(text_set['time_line'][idx])
 
-    return jsonify({'result': str(time)})  
+    return jsonify({'result': str(time)})
 
 @app.route('/get_frame')
 def get_frame():

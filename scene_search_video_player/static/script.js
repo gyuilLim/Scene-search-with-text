@@ -145,7 +145,60 @@ progress.addEventListener('change', setVideoProgress);
 searchBtn.addEventListener('click', toggleSearchBar);
 inferenceBtn.addEventListener('click', inference);
 
+document.getElementById('inferenceBtn').addEventListener('click', function() {
+  fetch('/inference', {
+      method: 'POST',
+      headers: {
+          'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ /* 보내고 싶은 데이터가 있다면 여기에 추가 */ })
+  })
+  .then(response => response.json())
+  .then(data => {
+      const taskId = data.task_id;
+      console.log('작업 ID:', taskId);
+      checkStatus(taskId);
+  })
+  .catch(error => {
+      console.error('에러:', error);
+  });
+});
 
+function checkStatus(taskId) {
+  const statusDiv = document.getElementById('status');
+  const interval = setInterval(() => {
+      fetch(`/status/${taskId}`)
+      .then(response => response.json())
+      .then(data => {
+          statusDiv.textContent = data.status;
+          if (data.status === "완료") {
+              clearInterval(interval);
+          }
+      })
+      .catch(error => {
+          console.error('에러:', error);
+          clearInterval(interval);
+      });
+  }, 3000); // 3초마다 상태 확인
+}
+
+// document.getElementById('inferenceBtn').addEventListener('click', function() {
+//   fetch('/inference', {
+//     method: 'POST',
+//     headers: {
+//         'Content-Type': 'application/json'
+//     },
+//     body: JSON.stringify({ /* 보내고 싶은 데이터가 있다면 여기에 추가 */ })
+//     })
+//     .then(response => response.json())
+//     .then(data => {
+//         console.log('추론 결과:', data.result);
+//     })
+//     .catch(error => {
+//         console.error('에러:', error);
+//     });
+//   inference(this)
+// });
 
 document.getElementById('searchBar').addEventListener('keyup', function(event) {
   if (event.key === 'Enter') { 
