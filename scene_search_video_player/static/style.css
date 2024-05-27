@@ -46,6 +46,27 @@ img {
   transform: translate(-50%, -50%); 
 }
 
+.search-input {
+  width: 400px;
+  font-size: 20px;
+  border: 2px solid #942828; /* 빨간색 윤곽선 추가 */
+  border-radius: 20px; /* 모서리를 둥글게 */
+  padding: 10px;
+  background-color: #fff; /* 배경 색상 */
+  color: #000; /* 텍스트 색상 */
+}
+
+
+.search-button {
+  background-color: #fff; /* 빨간색 배경 */
+  border: none;
+  border-radius: 50px;
+  padding: 10px;
+  cursor: pointer;
+  color: #942828;
+  font-size: 10px;
+}
+
 .screen {
   width: 80%;
   background-color: #000 !important;

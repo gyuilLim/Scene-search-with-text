@@ -4,6 +4,7 @@ const stop = document.getElementById('stop');
 const progress = document.getElementById('progress');
 const timestamp = document.getElementById('timestamp');
 const inferenceBtn = document.getElementById('inferenceBtn')
+const status = document.getElementById('status')
 const searchBtn = document.getElementById('searchBtn');
 const searchBar = document.getElementById('searchBar');
 const controls = document.getElementsByClassName('controls');
@@ -121,9 +122,11 @@ var InferenceCondition = false;
 if (!InferenceCondition) {
   inferenceBtn.style.display = "block";
   searchBtn.style.display = "none";
+  status.style.display = "none";
 } else {
   inferenceBtn.style.display = "none";
   searchBtn.style.display = "block";
+  status.style.display = "block";
 }
 
 function inference(element) {
