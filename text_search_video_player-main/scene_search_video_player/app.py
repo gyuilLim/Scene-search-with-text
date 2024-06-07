@@ -3,7 +3,7 @@ from utils.textSimilarity import text_similarity
 from threading import Thread
 import time
 from status_manager import processing_status
-# from texting import video_texting
+from texting import video_texting
 import json
 import cv2
 
@@ -25,8 +25,8 @@ def load_json() :
 def inference():
     task_id = str(time.time())  # 고유한 작업 ID 생성
     processing_status[task_id] = "시작됨"
-    # thread = Thread(target=video_texting, args=('./static/video.mp4', task_id))
-    # thread.start()
+    thread = Thread(target=video_texting, args=('./static/video.mp4', task_id))
+    thread.start()
     return jsonify({'task_id': task_id})
 
 
@@ -35,8 +35,6 @@ def status(task_id):
     print(f"Received status check for task_id: {task_id}")
     status = processing_status.get(task_id, "작업 ID가 유효하지 않습니다.")
     return jsonify({'status': status})
-
-
 
 # def inference() :
 #     video_texting('./static/video.mp4', 0)

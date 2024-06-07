@@ -185,23 +185,23 @@ function checkStatus(taskId) {
   }, 3000); // 3초마다 상태 확인
 }
 
-// document.getElementById('inferenceBtn').addEventListener('click', function() {
-//   fetch('/inference', {
-//     method: 'POST',
-//     headers: {
-//         'Content-Type': 'application/json'
-//     },
-//     body: JSON.stringify({ /* 보내고 싶은 데이터가 있다면 여기에 추가 */ })
-//     })
-//     .then(response => response.json())
-//     .then(data => {
-//         console.log('추론 결과:', data.result);
-//     })
-//     .catch(error => {
-//         console.error('에러:', error);
-//     });
-//   inference(this)
-// });
+document.getElementById('inferenceBtn').addEventListener('click', function() {
+  fetch('/inference', {
+    method: 'POST',
+    headers: {
+        'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ /* 보내고 싶은 데이터가 있다면 여기에 추가 */ })
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log('추론 결과:', data.result);
+    })
+    .catch(error => {
+        console.error('에러:', error);
+    });
+  inference(this)
+});
 
 document.getElementById('searchBar').addEventListener('keyup', function(event) {
   if (event.key === 'Enter') { 
