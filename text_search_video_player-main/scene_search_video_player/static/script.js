@@ -4,7 +4,7 @@ const stop = document.getElementById('stop');
 const progress = document.getElementById('progress');
 const timestamp = document.getElementById('timestamp');
 const inferenceBtn = document.getElementById('inferenceBtn')
-const status = document.getElementById('status')
+const inferenceStatus = document.getElementById('inferenceStatus')
 const searchBtn = document.getElementById('searchBtn');
 const searchBar = document.getElementById('searchBar');
 const controls = document.getElementsByClassName('controls');
@@ -76,6 +76,7 @@ video.addEventListener('mouseenter', function() {
   fadeIn(inferenceBtn);
   fadeIn(searchBtn);
   fadeIn(searchBar);
+  fadeIn(inferenceStatus);
 });
 
 video.addEventListener('mouseleave', function() {
@@ -86,6 +87,7 @@ video.addEventListener('mouseleave', function() {
   fadeOut(inferenceBtn);
   fadeOut(searchBtn);
   fadeIn(searchBar);
+  fadeOut(inferenceStatus);
 });
 
 for (let i = 0; i < controls.length; i++) {
@@ -96,6 +98,7 @@ for (let i = 0; i < controls.length; i++) {
     fadeIn(timestamp);
     fadeIn(inferenceBtn);
     fadeIn(searchBtn);
+    fadeIn(inferenceStatus)
   });
 
   controls[i].addEventListener('mouseleave', function() {
@@ -105,6 +108,7 @@ for (let i = 0; i < controls.length; i++) {
     fadeOut(timestamp);
     fadeOut(inferenceBtn);
     fadeOut(searchBtn);
+    fadeOut(inferenceStatus)
   });
 }
 
@@ -118,24 +122,19 @@ function fadeOut(element) {
   element.style.transition = 'opacity 0.3s ease-in-out';
 }
 
-var InferenceCondition = false;
-if (!InferenceCondition) {
-  inferenceBtn.style.display = "block";
-  searchBtn.style.display = "none";
-  status.style.display = "none";
-} else {
-  inferenceBtn.style.display = "none";
-  searchBtn.style.display = "block";
-  status.style.display = "block";
-}
+// infrence start 
+inferenceBtn.style.display = "block";
+searchBtn.style.display = "none";
+inferenceStatus.style.display = "none";
 
 function inference(element) {
   // inference
-  InferenceCondition = true
+  InferenceCondition = 1
   // inferenceBtn을 숨김
   inferenceBtn.style.display = "none";
   // searchBtn을 표시
-  searchBtn.style.display = "block";
+  searchBtn.style.display = "none";
+  inferenceStatus.style.display = "block";
 }
 
 video.addEventListener('click', toggleVideoStatus);
@@ -168,13 +167,15 @@ document.getElementById('inferenceBtn').addEventListener('click', function() {
 });
 
 function checkStatus(taskId) {
-  const statusDiv = document.getElementById('status');
+  const statusDiv = document.getElementById('inferenceStatus');
   const interval = setInterval(() => {
       fetch(`/status/${taskId}`)
       .then(response => response.json())
       .then(data => {
           statusDiv.textContent = data.status;
-          if (data.status === "완료") {
+          if (data.status === "100%") {
+              searchBtn.style.display = "block";
+              inferenceStatus.style.display = "none";
               clearInterval(interval);
           }
       })
