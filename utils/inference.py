@@ -30,5 +30,4 @@ def inference(model_name, text, model, dataloader, device) :
         flat_msg_list = [msg for sublist in msg_list for msg in sublist]
         max_index = text_similarity(flat_msg_list, 'a baby with her mother')
 
-
         return max_index, flat_msg_list

@@ -30,6 +30,7 @@ class custom_dataset(torch.utils.data.Dataset):
 
     def __getitem__(self, idx):
         return self.transform(self.pil_image_list[idx])
+        # return self.pil_image_list[idx]
 
     def frame_to_PIL(self, frame):
         pil_image = Image.fromarray(frame)

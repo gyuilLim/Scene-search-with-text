@@ -173,6 +173,7 @@ function checkStatus(taskId) {
       .then(response => response.json())
       .then(data => {
           statusDiv.textContent = data.status;
+          // if (data.status === "100%" || fs.accessSync('./text_set.json', fs.constants.F_OK)) {
           if (data.status === "100%") {
               searchBtn.style.display = "block";
               inferenceStatus.style.display = "none";
