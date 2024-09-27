@@ -9,7 +9,7 @@ from utils.dataset import custom_dataset
 from torch.utils.data import DataLoader
 from utils.model import load_model
 from utils.inference import inference
-# from utils.similarityCompression import similarity_compression
+from utils.similarityCompression import similarity_compression
 
 
 def video_texting(video_path, task_id, text="none") :
@@ -33,13 +33,8 @@ def video_texting(video_path, task_id, text="none") :
     max_index, flat_msg_list = inference(model_name, text, model, dataloader, device)
     processing_status[task_id] = "80%"
 
-
-    output_dict = {}
-    output_dict['text_list'] = flat_msg_list
-    output_dict['time_line'] = time_line
-
-    # output_dict = similarity_compression(flat_msg_list, time_line)
-    # processing_status[task_id] = "90%"
+    output_dict = similarity_compression(flat_msg_list, time_line)
+    processing_status[task_id] = "90%"
 
 
     with open("static/text_set.json", "w") as json_file :
