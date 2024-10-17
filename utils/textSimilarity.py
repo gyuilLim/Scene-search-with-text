@@ -11,28 +11,38 @@ def query(payload):
     return response.json()
 
 def text_similarity(flat_msg_list, prompt) :
-    data = query(
-        {
-            "inputs": {
-                "source_sentence": prompt,
-                "sentences": flat_msg_list
-            }
-        })
+    if type(prompt) != type([]) :
+        data = query(
+            {
+                "inputs": {
+                    "source_sentence": prompt,
+                    "sentences": flat_msg_list
+                }
+            })
 
-    sorted_idx = np.flip(np.argsort(data))
-    sorted_data = np.flip(sorted(data))
-    top_3_idx = [sorted_idx[0]]
+        sorted_idx = np.flip(np.argsort(data))
+        sorted_data = np.flip(sorted(data))
+        top_3_idx = [sorted_idx[0]]
 
-    count = 0
-    for idx, value in zip(sorted_idx, sorted_data) :
-        if value < data[top_3_idx[count]] - 0.15:
-            top_3_idx.append(idx)
-            count += 1
+        count = 0
+        for idx, value in zip(sorted_idx, sorted_data) :
+            if value < data[top_3_idx[count]] - 0.15:
+                top_3_idx.append(idx)
+                count += 1
 
-            if count > 1 :
-                break
+                if count > 1 :
+                    break
 
-    if len(top_3_idx) != 3 :
-        top_3_idx = sorted_idx[:3]
+        if len(top_3_idx) != 3 :
+            top_3_idx = sorted_idx[:3]
+
+    else :
+        top_3_idxs = []
+        scores = []
+        for text in prompt :
+            top_3_idx, score = text_similarity(flat_msg_list, text)
+            top_3_idxs.append(top_3_idx)
+            scores.append(score)
+        return top_3_idxs, scores
     
-    return top_3_idx
+    return top_3_idx, sorted_data[0]

@@ -4,6 +4,27 @@
   box-sizing: border-box;
 }
 
+#video, .controls, #controls_btn, #searchBar, #videoInfo {
+  display: none; /* 초기에는 숨김 */
+}
+
+#drop-area {
+  width: 100%;
+  height: 300px;
+  border: 2px dashed #00acc1;
+  border-radius: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  margin-top: 50px;
+  background-color: #e0f7fa ;  /* 기본 배경색 (밝은 파란색) */
+  transition: background-color 0.3s ease;
+  position: relative;
+  cursor : pointer;
+}
+
+
 body {
   font-family: 'Questrial', sans-serif;
   background-color: #666;
@@ -46,6 +67,24 @@ img {
   transform: translate(-50%, -50%); 
 }
 
+.video-info {
+  color: #fff;
+  display: none;
+  position: absolute;
+  height: 320px;
+  width: 640px;
+  z-index: 1;
+  background-color: rgba(0, 0, 0, 0.8);
+  border-radius: 10px; 
+  padding: 20px; 
+  top: 40%; 
+  left: 50%; 
+  transform: translate(-50%, -50%); 
+  font-size: 16px;
+}
+
+
+
 .search-input {
   width: 400px;
   font-size: 20px;
@@ -68,18 +107,21 @@ img {
 }
 
 .screen {
-  width: 80%;
+  width: 640px;  /* 고정된 너비 */
+  height: 360px; /* 고정된 높이 */
   background-color: #000 !important;
   border-top-left-radius: 10px;
   border-top-right-radius: 10px;
   border-bottom-left-radius: 10px;
   border-bottom-right-radius: 10px;
+  object-fit: cover; /* 비디오가 플레이어를 가득 채우도록 */
 }
+
 
 .controls {
   background: rgba(0, 0, 0, 0.1); 
   color: #fff;
-  width: 60%;
+  width: 640px; /* 비디오와 동일한 너비 */
   display: flex;
   justify-content: center;
   align-items: center;
@@ -87,6 +129,8 @@ img {
   position: relative;
   top: -40px; 
 }
+
+
 
 .controls .btn {
   border: 0;

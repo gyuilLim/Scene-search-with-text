@@ -12,6 +12,10 @@
 <body>
 <h1>Scene Search Video Player</h1>
 
+<div id="drop-area">
+  <p id="drop-message">Drag and drop a video file here</p>
+</div>
+
 <div class="search-bar" id="searchBar">
   <input type="text" placeholder="Input your text..." class="search-input" > 
   <button class="search-button" id="searchButton">
@@ -22,11 +26,14 @@
   <div id="videoFrames"></div>
 </div>
 
+<div class="video-info" id="videoInfo">
+</div>
+
 <video src="../static/video.mp4" id="video" class="screen" poster="../static/poster.png"></video>
 
-<div class="controls">
+<div class="controls" id="controls_btn">
   <button class="btn" id="play">
-    <i class="fa fa-play fa-2x"></i>
+    <i class="fa-solid fa-play"></i>
   </button>
 
   <button class="btn" id="stop">
@@ -34,11 +41,15 @@
   </button>
 
   <button class="btn" id="inferenceBtn"> 
-    <i class="fa fa-file-text fa-2x" style="color:white"></i>
+    <i class="fa fa-download fa-2x" style="color:white"></i>
   </button>
 
   <button class="btn" id="searchBtn"> 
     <i class="fa fa-search fa-2x"></i>
+  </button>
+
+  <button class="btn" id="videoInfoBtn"> 
+    <i class="fa fa-file-text fa-2x" style="color:white"></i>
   </button>
 
   <div id="inferenceStatus">0%</div>
@@ -59,3 +70,7 @@
 <script src="../static/script.js"></script>
 </body>
 </html>
+
+
+
+

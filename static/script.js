@@ -6,6 +6,8 @@ const timestamp = document.getElementById('timestamp');
 const inferenceBtn = document.getElementById('inferenceBtn')
 const inferenceStatus = document.getElementById('inferenceStatus')
 const searchBtn = document.getElementById('searchBtn');
+const videoInfoBtn = document.getElementById('videoInfoBtn');
+const videoInfo = document.getElementById('videoInfo')
 const searchBar = document.getElementById('searchBar');
 const controls = document.getElementsByClassName('controls');
 const timeOutputDiv = document.getElementById('timeOutput');
@@ -68,6 +70,26 @@ function toggleSearchBar() {
   }
 }
 
+function toggleVideoInfo() {
+  if (videoInfo.style.display === 'none') {
+    videoInfo.style.display = 'block';
+  } else {
+    videoInfo.style.display = 'none';
+  }
+  const videoDetails = `
+    <h3>Video Info</h3>
+    <p>This video is not provocative.</p>
+    <p>This video is not violent.</p>
+    <h3>Video Description</h3>
+    <p>The video showcases various everyday activities, such as a man and a little boy having a meal, people reading in a library, and a group watching a soccer game. It also features a chef, musicians, business interactions among men in suits, and includes advertisements for printer products.</p>
+  `;
+  
+  // div 안에 내용 추가
+  videoInfo.innerHTML = videoDetails;
+}
+
+
+// video안에 마우스가 들어오면 fade in / out 해주기
 video.addEventListener('mouseenter', function() {
   fadeIn(progress);
   fadeIn(play);
@@ -75,6 +97,7 @@ video.addEventListener('mouseenter', function() {
   fadeIn(timestamp);
   fadeIn(inferenceBtn);
   fadeIn(searchBtn);
+  fadeIn(videoInfoBtn);
   fadeIn(searchBar);
   fadeIn(inferenceStatus);
 });
@@ -86,10 +109,12 @@ video.addEventListener('mouseleave', function() {
   fadeOut(timestamp);
   fadeOut(inferenceBtn);
   fadeOut(searchBtn);
+  fadeOut(videoInfoBtn);
   fadeIn(searchBar);
   fadeOut(inferenceStatus);
 });
 
+// progress bar안에 마우스가 들어오면 객체 fade in / out 해주기
 for (let i = 0; i < controls.length; i++) {
   controls[i].addEventListener('mouseenter', function() {
     fadeIn(progress);
@@ -98,6 +123,7 @@ for (let i = 0; i < controls.length; i++) {
     fadeIn(timestamp);
     fadeIn(inferenceBtn);
     fadeIn(searchBtn);
+    fadeIn(videoInfoBtn);
     fadeIn(inferenceStatus)
   });
 
@@ -108,6 +134,7 @@ for (let i = 0; i < controls.length; i++) {
     fadeOut(timestamp);
     fadeOut(inferenceBtn);
     fadeOut(searchBtn);
+    fadeOut(videoInfoBtn);
     fadeOut(inferenceStatus)
   });
 }
@@ -125,6 +152,7 @@ function fadeOut(element) {
 // infrence start 
 inferenceBtn.style.display = "block";
 searchBtn.style.display = "none";
+videoInfoBtn.style.display = "none";
 inferenceStatus.style.display = "none";
 
 function inference(element) {
@@ -134,6 +162,7 @@ function inference(element) {
   inferenceBtn.style.display = "none";
   // searchBtn을 표시
   searchBtn.style.display = "none";
+  videoInfoBtn.style.display = "none";
   inferenceStatus.style.display = "block";
 }
 
@@ -145,6 +174,7 @@ play.addEventListener('click', toggleVideoStatus)
 stop.addEventListener('click', stopVideo);
 progress.addEventListener('change', setVideoProgress);
 searchBtn.addEventListener('click', toggleSearchBar);
+videoInfoBtn.addEventListener('click', toggleVideoInfo);
 inferenceBtn.addEventListener('click', inference);
 
 document.getElementById('inferenceBtn').addEventListener('click', function() {
@@ -176,6 +206,7 @@ function checkStatus(taskId) {
           // if (data.status === "100%" || fs.accessSync('./text_set.json', fs.constants.F_OK)) {
           if (data.status === "100%") {
               searchBtn.style.display = "block";
+              videoInfoBtn.style.display = "block";
               inferenceStatus.style.display = "none";
               clearInterval(interval);
           }
@@ -187,24 +218,8 @@ function checkStatus(taskId) {
   }, 3000); // 3초마다 상태 확인
 }
 
-document.getElementById('inferenceBtn').addEventListener('click', function() {
-  fetch('/inference', {
-    method: 'POST',
-    headers: {
-        'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({ /* 보내고 싶은 데이터가 있다면 여기에 추가 */ })
-    })
-    .then(response => response.json())
-    .then(data => {
-        console.log('추론 결과:', data.result);
-    })
-    .catch(error => {
-        console.error('에러:', error);
-    });
-  inference(this)
-});
 
+// 만들어진 text_set.json으로부터 사용자의 text를 검색하는 기능.
 document.getElementById('searchBar').addEventListener('keyup', function(event) {
   if (event.key === 'Enter') { 
     var searchInput = document.getElementById('searchBar').querySelector('input').value;
@@ -256,3 +271,54 @@ document.getElementById('searchBar').addEventListener('keyup', function(event) {
     });
   }
 });
+
+
+// Drag and drop video file
+const dropArea = document.getElementById('drop-area');
+
+dropArea.addEventListener('dragover', (event) => {
+  event.preventDefault();
+  dropArea.style.backgroundColor = '#b2ebf2'; // Change background color on drag
+});
+
+dropArea.addEventListener('dragleave', () => {
+  dropArea.style.backgroundColor = '#e0f7fa'; // Reset background color
+});
+
+dropArea.addEventListener('drop', (event) => {
+  event.preventDefault();
+  dropArea.style.backgroundColor = '#e0f7fa'; // Reset background color
+  dropArea.style.display = "none"
+  const files = event.dataTransfer.files;
+  
+  if (files.length > 0) {
+    const videoFile = files[0];
+    if (videoFile.type.startsWith('video/')) {
+      const videoURL = URL.createObjectURL(videoFile);
+      video.src = videoURL;
+      video.load(); // Load the new video
+      video.play(); // Optionally, play the video immediately
+      showControls(); // Show controls when video is loaded
+    } else {
+      alert('Please drop a valid video file.');
+    }
+  }
+});
+
+// Show controls when video is loaded
+function showControls() {
+  for (let control of controls) {
+    control.style.display = 'flex';
+  }
+  video.style.display = 'block';
+}
+
+// dropArea.addEventListener('dragover', (event) => {
+//   event.preventDefault();
+//   dropArea.style.display = 'none'; // 드래그 중에 drop area 숨기기
+// });
+
+// dropArea.addEventListener('dragleave', () => {
+//   dropArea.style.display = 'flex'; // 드래그가 끝나면 다시 보이기
+// });
+

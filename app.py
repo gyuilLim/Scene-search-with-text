@@ -45,7 +45,7 @@ def search():
     search_text = request.json.get('search_text', '')  
 
     text_set = load_json()
-    top_3_idx = text_similarity(text_set['text_list'], search_text)
+    top_3_idx, score = text_similarity(text_set['text_list'], search_text)
 
     time = []
     for idx in top_3_idx :
