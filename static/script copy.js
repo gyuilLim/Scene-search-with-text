@@ -1,6 +1,6 @@
 const video = document.getElementById('video');
 const play = document.getElementById('play');
-const stop = document.getElementById('stop');
+// const stop = document.getElementById('stop');
 const progress = document.getElementById('progress');
 const timestamp = document.getElementById('timestamp');
 const inferenceBtn = document.getElementById('inferenceBtn')
@@ -57,10 +57,10 @@ function setVideoProgress() {
 }
 
 // Stop video
-function stopVideo() {
-  video.currentTime = 0;
-  video.pause();
-}
+// function stopVideo() {
+//   video.currentTime = 0;
+//   video.pause();
+// }
 
 function toggleSearchBar() {
   if (searchBar.style.display === 'none') {
@@ -93,7 +93,7 @@ function toggleVideoInfo() {
 video.addEventListener('mouseenter', function() {
   fadeIn(progress);
   fadeIn(play);
-  fadeIn(stop);
+  // fadeIn(stop);
   fadeIn(timestamp);
   fadeIn(inferenceBtn);
   fadeIn(searchBtn);
@@ -105,7 +105,7 @@ video.addEventListener('mouseenter', function() {
 video.addEventListener('mouseleave', function() {
   fadeOut(progress);
   fadeOut(play);
-  fadeOut(stop);
+  // fadeOut(stop);
   fadeOut(timestamp);
   fadeOut(inferenceBtn);
   fadeOut(searchBtn);
@@ -119,7 +119,7 @@ for (let i = 0; i < controls.length; i++) {
   controls[i].addEventListener('mouseenter', function() {
     fadeIn(progress);
     fadeIn(play);
-    fadeIn(stop);
+    // fadeIn(stop);
     fadeIn(timestamp);
     fadeIn(inferenceBtn);
     fadeIn(searchBtn);
@@ -130,7 +130,7 @@ for (let i = 0; i < controls.length; i++) {
   controls[i].addEventListener('mouseleave', function() {
     fadeOut(progress);
     fadeOut(play);
-    fadeOut(stop);
+    // fadeOut(stop);
     fadeOut(timestamp);
     fadeOut(inferenceBtn);
     fadeOut(searchBtn);
@@ -171,7 +171,7 @@ video.addEventListener('pause', updatePlayIcon);
 video.addEventListener('play', updatePlayIcon);
 video.addEventListener('timeupdate', updateProgress);
 play.addEventListener('click', toggleVideoStatus)
-stop.addEventListener('click', stopVideo);
+// stop.addEventListener('click', stopVideo);
 progress.addEventListener('change', setVideoProgress);
 searchBtn.addEventListener('click', toggleSearchBar);
 videoInfoBtn.addEventListener('click', toggleVideoInfo);
@@ -278,16 +278,16 @@ const dropArea = document.getElementById('drop-area');
 
 dropArea.addEventListener('dragover', (event) => {
   event.preventDefault();
-  dropArea.style.backgroundColor = '#b2ebf2'; // Change background color on drag
+  dropArea.style.backgroundColor = '#ebe5e5'; // Change background color on drag
 });
 
 dropArea.addEventListener('dragleave', () => {
-  dropArea.style.backgroundColor = '#e0f7fa'; // Reset background color
+  dropArea.style.backgroundColor = '#ffffff'; // Reset background color
 });
 
 dropArea.addEventListener('drop', (event) => {
   event.preventDefault();
-  dropArea.style.backgroundColor = '#e0f7fa'; // Reset background color
+  dropArea.style.backgroundColor = '#ffffff'; // Reset background color
   dropArea.style.display = "none"
   const files = event.dataTransfer.files;
   

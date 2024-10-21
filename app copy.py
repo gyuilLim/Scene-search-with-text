@@ -6,7 +6,6 @@ from status_manager import processing_status
 from texting import video_texting
 import json
 import cv2
-import os
 
 app = Flask(__name__)
 
@@ -21,17 +20,9 @@ def load_json() :
     
     return text_set
 
-@app.route('/check_text_set', methods=['GET'])
-def check_text_set():
-    # text_set.json 파일의 존재 여부 확인
-    file_path = './static/text_set.json'
-    file_exists = os.path.exists(file_path)
-    return jsonify({'exists': file_exists})
-
 
 @app.route('/inference', methods=['POST'])
 def inference():
-
     task_id = str(time.time())  # 고유한 작업 ID 생성
     processing_status[task_id] = "시작됨"
     thread = Thread(target=video_texting, args=('./static/video.mp4', task_id))
