@@ -12,12 +12,19 @@
 <link rel="stylesheet" href="../static/style.css">
 </head>
 <body>
-<h1 style="color : black;">Scene Search Video Player </h1>
+<h1 style="color : white;">Scene Search Video Player </h1>
 
 
-<div id="drop-area">
+<!-- <div id="drop-area">
   <p id="drop-message">Drag and drop a video file here</p>
-</div>
+</div> -->
+
+<form id="videoUploadForm" enctype="multipart/form-data"></form>
+  <div id="drop-area">
+    <p id="drop-message">Drag and drop a video file here</p>
+  </div>
+  <input type="file" id="videoFileInput" accept="video/*" style="display:none;">
+</form>
 
 <div class="search-bar" id="searchBar">
   <input type="text" placeholder="Input your text..." class="search-input" > 
@@ -71,6 +78,11 @@
 
 <!-- <script src="https://www.youtube.com/iframe_api"></script> -->
 <script src="../static/script.js"></script>
+
+<footer style="text-align: center; margin-top: 20px; color: white; font-size: 12px;">
+  <p>Follow me on <a href="https://github.com/gyuilLim" target="_blank" style="color: lightblue;">GitHub</a> | 
+     Visit my <a href="https://mvcv.tistory.com/" target="_blank" style="color: lightblue;">Blog</a></p>
+</footer>
 </body>
 </html>
 

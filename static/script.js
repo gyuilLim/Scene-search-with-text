@@ -11,6 +11,8 @@ const searchBar = document.getElementById('searchBar');
 const controls = document.getElementsByClassName('controls');
 const timeOutputDiv = document.getElementById('timeOutput');
 const videoFramesDiv = document.getElementById('videoFrames');
+const dropArea = document.getElementById('drop-area');
+const videoFileInput = document.getElementById('videoFileInput');
 
 // Play & pause video
 function toggleVideoStatus() {
@@ -100,6 +102,58 @@ function fadeOut(element) {
   element.style.transition = 'opacity 0.3s ease-in-out';
 }
 
+
+// video안에 마우스가 들어오면 fade in / out 해주기
+video.addEventListener('mouseenter', function() {
+  fadeIn(progress);
+  fadeIn(play);
+  // fadeIn(stop);
+  fadeIn(timestamp);
+  fadeIn(inferenceBtn);
+  fadeIn(searchBtn);
+  fadeIn(videoInfoBtn);
+  fadeIn(searchBar);
+  fadeIn(inferenceStatus);
+});
+
+video.addEventListener('mouseleave', function() {
+  fadeOut(progress);
+  fadeOut(play);
+  // fadeOut(stop);
+  fadeOut(timestamp);
+  fadeOut(inferenceBtn);
+  fadeOut(searchBtn);
+  fadeOut(videoInfoBtn);
+  fadeIn(searchBar);
+  fadeOut(inferenceStatus);
+});
+
+// progress bar안에 마우스가 들어오면 객체 fade in / out 해주기
+for (let i = 0; i < controls.length; i++) {
+  controls[i].addEventListener('mouseenter', function() {
+    fadeIn(progress);
+    fadeIn(play);
+    // fadeIn(stop);
+    fadeIn(timestamp);
+    fadeIn(inferenceBtn);
+    fadeIn(searchBtn);
+    fadeIn(videoInfoBtn);
+    fadeIn(inferenceStatus)
+  });
+
+  controls[i].addEventListener('mouseleave', function() {
+    fadeOut(progress);
+    fadeOut(play);
+    // fadeOut(stop);
+    fadeOut(timestamp);
+    fadeOut(inferenceBtn);
+    fadeOut(searchBtn);
+    fadeOut(videoInfoBtn);
+    fadeOut(inferenceStatus)
+  });
+}
+
+
 // Inference logic
 function inference() {
   inferenceBtn.style.display = "none";
@@ -126,6 +180,29 @@ function handleInference() {
     console.error('에러:', error);
   });
 }
+
+// Inference 버튼을 눌렀을 때
+inferenceBtn.addEventListener('click', () => {
+  if (uploadedVideoPath) {
+    fetch('/inference', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ video_path: uploadedVideoPath })  // 서버로 비디오 경로 전송
+    })
+    .then(response => response.json())
+    .then(data => {
+      const taskId = data.task_id;
+      checkStatus(taskId);  // 상태 확인 함수 호출
+    })
+    .catch(error => {
+      console.error('Error during inference:', error);
+    });
+  } else {
+    alert('No video uploaded.');
+  }
+});
 
 // 상태 확인 및 text_set.json 존재 여부 확인
 function checkStatus(taskId) {
@@ -167,6 +244,46 @@ function checkStatus(taskId) {
   }, 10000); // 3초마다 상태 확인
 }
 
+// // Handle search
+// document.getElementById('searchBar').addEventListener('keyup', function(event) {
+//   if (event.key === 'Enter') {
+//     const searchInput = document.getElementById('searchBar').querySelector('input').value;
+//     fetch('/search', {
+//       method: 'POST',
+//       headers: {
+//         'Content-Type': 'application/json',
+//       },
+//       body: JSON.stringify({ search_text: searchInput })
+//     })
+//     .then(response => response.json())
+//     .then(data => {
+//       videoFramesDiv.innerHTML = '';
+//       JSON.parse(data.result).forEach((time, index) => {
+//         fetch(`/get_frame?time=${time}&index=${index}`)
+//           .then(response => response.json())
+//           .then(frameData => {
+//             const frameImg = document.createElement('img');
+//             frameImg.src = `${frameData.frame_url}?${new Date().getTime()}`; // Prevent caching
+//             frameImg.style.width = '30%';
+//             frameImg.alt = `Frame at Time ${index + 1}`;
+//             frameImg.addEventListener('click', () => {
+//               video.currentTime = time;
+//               searchBar.style.display = 'none';
+//             });
+//             videoFramesDiv.appendChild(frameImg);
+//           })
+//           .catch(error => {
+//             console.error('Error fetching frame:', error);
+//           });
+//       });
+//       document.getElementById('searchBar').querySelector('input').value = '';
+//     })
+//     .catch(error => {
+//       console.error('Error:', error);
+//     });
+//   }
+// });
+
 // Handle search
 document.getElementById('searchBar').addEventListener('keyup', function(event) {
   if (event.key === 'Enter') {
@@ -182,13 +299,16 @@ document.getElementById('searchBar').addEventListener('keyup', function(event) {
     .then(data => {
       videoFramesDiv.innerHTML = '';
       JSON.parse(data.result).forEach((time, index) => {
-        fetch(`/get_frame?time=${time}&index=${index}`)
+        // 프레임을 요청할 때 비디오 경로와 함께 요청
+        fetch(`/get_frame?time=${time}&index=${index}&video_path=${encodeURIComponent(uploadedVideoPath)}`)
           .then(response => response.json())
           .then(frameData => {
             const frameImg = document.createElement('img');
             frameImg.src = `${frameData.frame_url}?${new Date().getTime()}`; // Prevent caching
             frameImg.style.width = '30%';
             frameImg.alt = `Frame at Time ${index + 1}`;
+            
+            // 프레임을 클릭하면 해당 시간으로 이동
             frameImg.addEventListener('click', () => {
               video.currentTime = time;
               searchBar.style.display = 'none';
@@ -207,17 +327,34 @@ document.getElementById('searchBar').addEventListener('keyup', function(event) {
   }
 });
 
-// Drag and drop video file
-const dropArea = document.getElementById('drop-area');
-
 dropArea.addEventListener('dragover', (event) => {
   event.preventDefault();
-  dropArea.style.backgroundColor = '#ebe5e5'; // Change background color on drag
+  dropArea.style.backgroundColor = '#B3B3B3'; // Change background color on drag
 });
 
 dropArea.addEventListener('dragleave', () => {
   dropArea.style.backgroundColor = '#ffffff'; // Reset background color
 });
+
+// dropArea.addEventListener('drop', (event) => {
+//   event.preventDefault();
+//   dropArea.style.backgroundColor = '#ffffff';
+//   dropArea.style.display = "none";
+//   const files = event.dataTransfer.files;
+
+//   if (files.length > 0) {
+//     const videoFile = files[0];
+//     if (videoFile.type.startsWith('video/')) {
+//       const videoURL = URL.createObjectURL(videoFile);
+//       video.src = videoURL;
+//       video.load();
+//       video.play();
+//       showControls();
+//     } else {
+//       alert('Please drop a valid video file.');
+//     }
+//   }
+// });
 
 dropArea.addEventListener('drop', (event) => {
   event.preventDefault();
@@ -233,6 +370,26 @@ dropArea.addEventListener('drop', (event) => {
       video.load();
       video.play();
       showControls();
+
+      // 비디오 파일을 서버로 전송
+      const formData = new FormData();
+      formData.append('video', videoFile);
+
+      fetch('/upload_video', {
+        method: 'POST',
+        body: formData
+      })
+      .then(response => response.json())
+      .then(data => {
+        console.log('Upload success:', data);
+        console.log(data.video_path)
+
+        uploadedVideoPath = data.video_path
+        // 이제 작업 ID를 사용하여 추론 요청을 할 수 있다.
+      })
+      .catch(error => {
+        console.error('Error uploading video:', error);
+      });
     } else {
       alert('Please drop a valid video file.');
     }
